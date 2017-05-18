@@ -1,19 +1,16 @@
-api_version = 1
 -- Rasterbot profile
 
-properties.force_split_edges = true
+require('lib/profile_v2')
 
--- Set to true if you need to call the node_function for every node.
--- Generally can be left as false to avoid unnecessary Lua calls
--- (which slow down pre-processing).
-properties.call_tagless_node_function      = false
-
--- Minimalist node_ and way_functions in order to test source_ and segment_functions
-
-function node_function (node, result)
+function setup()
+  return {
+    force_split_edges = true,
+    call_tagless_node_function = false
+  }
 end
 
-function way_function (way, result)
+-- Minimalist way_functions in order to test source_ and segment_functions
+function way_function (profile, way, result)
   local highway = way:get_value_by_key("highway")
   local name = way:get_value_by_key("name")
 
@@ -28,7 +25,7 @@ function way_function (way, result)
   result.backward_speed = 15
 end
 
-function source_function ()
+function source_function (profile)
   local path = os.getenv('OSRM_RASTER_SOURCE')
   if not path then
     path = "rastersource.asc"
@@ -44,7 +41,7 @@ function source_function ()
   )
 end
 
-function segment_function (segment)
+function segment_function (profile, segment)
   local sourceData = sources:query(raster_source, segment.source.lon, segment.source.lat)
   local targetData = sources:query(raster_source, segment.target.lon, segment.target.lat)
   io.write("evaluating segment: " .. sourceData.datum .. " " .. targetData.datum .. "\n")
@@ -66,3 +63,9 @@ function segment_function (segment)
   segment.weight = scaled_weight
   segment.duration = scaled_duration
 end
+
+return {
+  setup = setup,
+  way = way_function,
+  segment = segment_function
+}

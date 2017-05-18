@@ -30,13 +30,16 @@ struct LuaScriptingContext final
     bool has_node_function;
     bool has_way_function;
     bool has_segment_function;
+    bool has_source_function;
 
     sol::function turn_function;
     sol::function way_function;
     sol::function node_function;
     sol::function segment_function;
+    sol::function source_function;
 
     int api_version;
+    sol::table  profile_table;
 };
 
 /**
@@ -49,8 +52,8 @@ struct LuaScriptingContext final
 class Sol2ScriptingEnvironment final : public ScriptingEnvironment
 {
   public:
-    static const constexpr int SUPPORTED_MIN_API_VERSION = 0;
-    static const constexpr int SUPPORTED_MAX_API_VERSION = 1;
+    static const constexpr int SUPPORTED_MIN_API_VERSION = 1;
+    static const constexpr int SUPPORTED_MAX_API_VERSION = 2;
 
     explicit Sol2ScriptingEnvironment(const std::string &file_name);
     ~Sol2ScriptingEnvironment() override = default;
@@ -59,6 +62,8 @@ class Sol2ScriptingEnvironment final : public ScriptingEnvironment
 
     LuaScriptingContext &GetSol2Context();
 
+    std::vector<std::string> GetStringListFromTable(const std::string &table_name);
+    std::vector<std::string> GetStringListFromFunction(const std::string &function_name);
     std::vector<std::string> GetNameSuffixList() override;
     std::vector<std::string> GetRestrictions() override;
     void SetupSources() override;

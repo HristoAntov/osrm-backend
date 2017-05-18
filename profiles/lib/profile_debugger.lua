@@ -90,7 +90,8 @@ function Debug.report_tag_fetches()
 end
 
 function Debug.load_profile(profile)
-  require(profile)
+  Debug.functions = require(profile)
+  Debug.profile = Debug.functions.setup()
 end
 
 function Debug.reset_tag_fetch_counts()
@@ -133,7 +134,7 @@ function Debug.way_function(way,result)
   Debug:reset_tag_fetch_counts()
   
    -- call the global method defined in the profile file
-  way_function(way,result)
+  way_function(Debug.profile,way,result)
 end
 
 return Debug

@@ -18,6 +18,7 @@ properties.weight_precision                = 2
 assert(properties.max_turn_weight == 327.67)
 
 function node_function (node, result)
+  print(node, result)
   print ('node_function ' .. node:id())
 end
 
