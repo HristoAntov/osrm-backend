@@ -3,7 +3,6 @@
 require('lib/profile_v2')
 
 function setup()
-  --local raster_path = os.getenv('OSRM_RASTER_SOURCE') or "rastersource.asc"
   local raster_path = os.getenv('OSRM_RASTER_SOURCE') or "rastersource.asc"
 
   return {

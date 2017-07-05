@@ -313,58 +313,58 @@ function process_way(profile, way, result)
   handlers = Sequence {
     -- set the default mode for this profile. if can be changed later
     -- in case it turns we're e.g. on a ferry
-    'handle_default_mode',
+    WayHandlers.default_mode,
 
     -- check various tags that could indicate that the way is not
     -- routable. this includes things like status=impassable,
     -- toll=yes and oneway=reversible
-    'handle_blocked_ways',
+    WayHandlers.blocked_ways,
 
     -- determine access status by checking our hierarchy of
     -- access tags, e.g: motorcar, motor_vehicle, vehicle
-    'handle_access',
+    WayHandlers.access,
 
     -- check whether forward/backward directions are routable
-    'handle_oneway',
+    WayHandlers.oneway,
 
     -- check a road's destination
-    'handle_destinations',
+    WayHandlers.destinations,
 
     -- check whether we're using a special transport mode
-    'handle_ferries',
-    'handle_movables',
+    WayHandlers.ferries,
+    WayHandlers.movables,
 
     -- handle service road restrictions
-    'handle_service',
+    WayHandlers.service,
 
     -- handle hov
-    'handle_hov',
+    WayHandlers.hov,
 
     -- compute speed taking into account way type, maxspeed tags, etc.
-    'handle_speed',
-    'handle_surface',
-    'handle_maxspeed',
-    'handle_penalties',
+    WayHandlers.speed,
+    WayHandlers.surface,
+    WayHandlers.maxspeed,
+    WayHandlers.penalties,
 
     -- compute class labels
     'handle_classes',
 
     -- handle turn lanes and road classification, used for guidance
-    'handle_turn_lanes',
-    'handle_classification',
+    WayHandlers.turn_lanes,
+    WayHandlers.classification,
 
     -- handle various other flags
-    'handle_roundabouts',
-    'handle_startpoint',
+    WayHandlers.roundabouts,
+    WayHandlers.startpoint,
 
     -- set name, ref and pronunciation
-    'handle_names',
+    WayHandlers.names,
 
     -- set weight properties of the way
-    'handle_weights'
+    WayHandlers.weights
   }
 
-  Handlers.run(handlers,way,result,data,profile)
+  WayHandlers.run(profile,way,result,data,handlers)
 end
 
 function process_turn (profile, turn)

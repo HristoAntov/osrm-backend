@@ -230,41 +230,8 @@ function process_node (profile, node, result)
   end
 end
 
-function process_way (profile, way, result)
-  -- the initial filtering of ways based on presence of tags
-  -- affects processing times significantly, because all ways
-  -- have to be checked.
-  -- to increase performance, prefetching and initial tag check
-  -- is done directly instead of via a handler.
-
-  -- in general we should try to abort as soon as
-  -- possible if the way is not routable, to avoid doing
-  -- unnecessary work. this implies we should check things that
-  -- commonly forbids access early, and handle edge cases later.
-
-  -- data table for storing intermediate values during processing
-
-  local data = {
-    -- prefetch tags
-    highway = way:get_value_by_key('highway'),
-  }
-
-  local handlers = Sequence {
-    -- set the default mode for this profile. if can be changed later
-    -- in case it turns we're e.g. on a ferry
-    'handle_default_mode',
-
-    -- check various tags that could indicate that the way is not
-    -- routable. this includes things like status=impassable,
-    -- toll=yes and oneway=reversible
-    'handle_blocked_ways',
-  }
-
-  if Handlers.run(handlers,way,result,data,profile) == false then
-    return
-  end
-
-  -- initial routability check, filters out buildings, boundaries, etc
+function handle_bicycle_tags(profile,way,result,data)
+    -- initial routability check, filters out buildings, boundaries, etc
   local route = way:get_value_by_key("route")
   local man_made = way:get_value_by_key("man_made")
   local railway = way:get_value_by_key("railway")
@@ -280,13 +247,13 @@ function process_way (profile, way, result)
   (not public_transport or public_transport=='') and
   (not bridge or bridge=='')
   then
-    return
+    return false
   end
 
   -- access
   local access = find_access_tag(way, profile.access_tags_hierarchy)
   if access and profile.access_tag_blacklist[access] then
-    return
+    return false
   end
 
   -- other tags
@@ -521,23 +488,54 @@ function process_way (profile, way, result)
         result.weight = result.duration / forward_penalty
       end
   end
+end
+function process_way (profile, way, result)
+  -- the initial filtering of ways based on presence of tags
+  -- affects processing times significantly, because all ways
+  -- have to be checked.
+  -- to increase performance, prefetching and initial tag check
+  -- is done directly instead of via a handler.
 
-  local handlers = Sequence {
-    -- compute speed taking into account way type, maxspeed tags, etc.
-    'handle_surface',
+  -- in general we should try to abort as soon as
+  -- possible if the way is not routable, to avoid doing
+  -- unnecessary work. this implies we should check things that
+  -- commonly forbids access early, and handle edge cases later.
 
-    -- handle turn lanes and road classification, used for guidance
-    'handle_classification',
+  -- data table for storing intermediate values during processing
 
-    -- handle various other flags
-    'handle_roundabouts',
-    --'handle_startpoint',
-
-    -- set name, ref and pronunciation
-    'handle_names'
+  local data = {
+    -- prefetch tags
+    highway = way:get_value_by_key('highway'),
   }
 
-  Handlers.run(handlers,way,result,data,profile)
+  local handlers = Sequence {
+    -- set the default mode for this profile. if can be changed later
+    -- in case it turns we're e.g. on a ferry
+    WayHandlers.default_mode,
+
+    -- check various tags that could indicate that the way is not
+    -- routable. this includes things like status=impassable,
+    -- toll=yes and oneway=reversible
+    WayHandlers.blocked_ways,
+
+    -- our main handler
+    handle_bicycle_tags,
+
+    -- compute speed taking into account way type, maxspeed tags, etc.
+    WayHandlers.surface,
+
+    -- handle turn lanes and road classification, used for guidance
+    WayHandlers.classification,
+
+    -- handle various other flags
+    WayHandlers.roundabouts,
+    --WayHandlers.startpoint,
+
+    -- set name, ref and pronunciation
+    WayHandlers.names
+  }
+
+  WayHandlers.run(profile,way,result,data,handlers)
 end
 
 function process_turn(profile, turn)

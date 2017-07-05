@@ -195,43 +195,43 @@ function process_way(profile, way, result)
   local handlers = Sequence {
     -- set the default mode for this profile. if can be changed later
     -- in case it turns we're e.g. on a ferry
-    'handle_default_mode',
+    WayHandlers.default_mode,
 
     -- check various tags that could indicate that the way is not
     -- routable. this includes things like status=impassable,
     -- toll=yes and oneway=reversible
-    'handle_blocked_ways',
+    WayHandlers.blocked_ways,
 
     -- determine access status by checking our hierarchy of
     -- access tags, e.g: motorcar, motor_vehicle, vehicle
-    'handle_access',
+    WayHandlers.access,
 
     -- check whether forward/backward directons are routable
-    'handle_oneway',
+    WayHandlers.oneway,
 
     -- check whether forward/backward directons are routable
-    'handle_destinations',
+    WayHandlers.destinations,
 
     -- check whether we're using a special transport mode
-    'handle_ferries',
-    'handle_movables',
+    WayHandlers.ferries,
+    WayHandlers.movables,
 
     -- compute speed taking into account way type, maxspeed tags, etc.
-    'handle_speed',
-    'handle_surface',
+    WayHandlers.speed,
+    WayHandlers.surface,
 
     -- handle turn lanes and road classification, used for guidance
-    'handle_classification',
+    WayHandlers.classification,
 
     -- handle various other flags
-    'handle_roundabouts',
-    'handle_startpoint',
+    WayHandlers.roundabouts,
+    WayHandlers.startpoint,
 
     -- set name, ref and pronunciation
-    'handle_names'
+    WayHandlers.names
   }
 
-  Handlers.run(handlers,way,result,data,profile)
+  WayHandlers.run(profile,way,result,data,handlers)
 end
 
 function process_turn (profile, turn)
