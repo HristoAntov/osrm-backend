@@ -12,7 +12,7 @@ function setup()
     continue_straight_at_waypoint = false,
   --weight_name                   = 'cyclability',
     weight_name                   = 'duration',
-    call_tagless_node_function    = false,
+    process_call_tagless_node    = false,
 
     default_mode              = mode.cycling,
     default_speed             = default_speed,
@@ -202,7 +202,7 @@ local function parse_maxspeed(source)
     return n
 end
 
-function node_function (profile, node, result)
+function process_node (profile, node, result)
   -- parse access and barrier tags
   local highway = node:get_value_by_key("highway")
   local is_crossing = highway and highway == "crossing"
@@ -230,7 +230,7 @@ function node_function (profile, node, result)
   end
 end
 
-function way_function (profile, way, result)
+function process_way (profile, way, result)
   -- the initial filtering of ways based on presence of tags
   -- affects processing times significantly, because all ways
   -- have to be checked.
@@ -540,7 +540,7 @@ function way_function (profile, way, result)
   Handlers.run(handlers,way,result,data,profile)
 end
 
-function turn_function(profile, turn)
+function process_turn(profile, turn)
   -- compute turn penalty as angle^2, with a left/right bias
   local normalized_angle = turn.angle / 90.0
   if normalized_angle >= 0.0 then
@@ -563,7 +563,7 @@ end
 
 return {
   setup = setup,
-  way = way_function,
-  node = node_function,
-  turn = turn_function
+  process_way = process_way,
+  process_node = process_node,
+  process_turn = process_turn
 }

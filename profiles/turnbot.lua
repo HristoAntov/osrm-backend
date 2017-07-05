@@ -3,7 +3,7 @@
 
 functions = require 'testbot'
 
-functions.turn = function(profile, turn)
+functions.process_turn = function(profile, turn)
   turn.duration = 20 * math.abs(turn.angle) / 180
 end
 

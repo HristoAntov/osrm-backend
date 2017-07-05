@@ -233,7 +233,7 @@ Feature: Basic Distance Matrix
           return profile
         end
 
-        functions.segment = function(profile, segment)
+        functions.process_segment = function(profile, segment)
           segment.weight = 2
           segment.duration = 11
         end
@@ -276,7 +276,7 @@ Feature: Basic Distance Matrix
           return profile
         end
 
-        functions.segment = function(profile, segment)
+        functions.process_segment = function(profile, segment)
           segment.weight = 777
           segment.duration = 3
         end

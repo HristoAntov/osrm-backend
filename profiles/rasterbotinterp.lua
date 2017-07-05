@@ -2,9 +2,9 @@
 
 functions = require('rasterbot')
 
-functions.segment = function(profile, segment)
-  local sourceData = sources:interpolate(raster_source, segment.source.lon, segment.source.lat)
-  local targetData = sources:interpolate(raster_source, segment.target.lon, segment.target.lat)
+functions.process_segment = function(profile, segment)
+  local sourceData = sources:interpolate(profile.raster_source, segment.source.lon, segment.source.lat)
+  local targetData = sources:interpolate(profile.raster_source, segment.target.lon, segment.target.lat)
   io.write("evaluating segment: " .. sourceData.datum .. " " .. targetData.datum .. "\n")
   local invalid = sourceData.invalid_data()
   local scaled_weight = segment.weight

@@ -13,7 +13,7 @@ function setup()
     use_turn_restrictions         = true,
     max_speed_for_map_matching    = 30/3.6, --km -> m/s
     weight_name                   = 'duration',
-    call_tagless_node_function     = false,
+    process_call_tagless_node     = false,
 
     -- used internally
     uturn_penalty                 = 20,
@@ -42,7 +42,7 @@ function limit_speed(speed, limits)
   return speed
 end
 
-function node_function (profile, node, result)
+function process_node (profile, node, result)
   local traffic_signal = node:get_value_by_key("highway")
 
   if traffic_signal and traffic_signal == "traffic_signals" then
@@ -51,7 +51,7 @@ function node_function (profile, node, result)
   end
 end
 
-function way_function (profile, way, result)
+function process_way (profile, way, result)
   local highway = way:get_value_by_key("highway")
   local name = way:get_value_by_key("name")
   local oneway = way:get_value_by_key("oneway")
@@ -121,7 +121,7 @@ function way_function (profile, way, result)
   end
 end
 
-function turn_function (profile, turn)
+function process_turn (profile, turn)
   if turn.direction_modifier == direction_modifier.uturn then
     turn.duration = profile.uturn_penalty
     turn.weight = profile.uturn_penalty
@@ -133,7 +133,7 @@ end
 
 return {
   setup = setup,
-  way = way_function,
-  node = node_function,
-  turn = turn_function
+  process_way = process_way,
+  process_node = process_node,
+  process_turn = process_turn
 }

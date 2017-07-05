@@ -48,7 +48,7 @@ Feature: Projection to nearest point on road
           segment.duration = 2.8
         end
 
-        functions.segment = segment_function
+        functions.process_segment = segment_function
         return functions
         """
 

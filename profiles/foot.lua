@@ -130,7 +130,7 @@ function setup()
   }
 end
 
-function node_function (profile, node, result)
+function process_node (profile, node, result)
   -- parse access and barrier tags
   local access = find_access_tag(node, profile.access_tags_hierarchy)
   if access then
@@ -158,7 +158,7 @@ function node_function (profile, node, result)
 end
 
 -- main entry point for processsing a way
-function way_function(profile, way, result)
+function process_way(profile, way, result)
   -- the intial filtering of ways based on presence of tags
   -- affects processing times significantly, because all ways
   -- have to be checked.
@@ -234,7 +234,7 @@ function way_function(profile, way, result)
   Handlers.run(handlers,way,result,data,profile)
 end
 
-function turn_function (profile, turn)
+function process_turn (profile, turn)
   turn.duration = 0.
 
   if turn.direction_modifier == direction_modifier.u_turn then
@@ -254,7 +254,7 @@ end
 
 return {
   setup = setup,
-  way = way_function,
-  node = node_function,
-  turn = turn_function
+  process_way =  process_way,
+  process_node = process_node,
+  process_turn = process_turn
 }

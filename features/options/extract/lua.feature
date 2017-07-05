@@ -24,7 +24,7 @@ Feature: osrm-extract lua ways:get_nodes()
           result.forward_speed = 1
         end
 
-        functions.way = way_function
+        functions.process_way = way_function
         return functions
         """
         When I run "osrm-extract --profile {profile_file} {osm_file}"

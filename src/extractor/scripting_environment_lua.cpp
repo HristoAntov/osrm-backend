@@ -481,10 +481,10 @@ void Sol2ScriptingEnvironment::InitContext(LuaScriptingContext &context)
             context.profile_table = profile_table.value();
 
         // store functions
-        context.turn_function = function_table.value()["turn"];
-        context.node_function = function_table.value()["node"];
-        context.way_function = function_table.value()["way"];
-        context.segment_function = function_table.value()["segment"];
+        context.turn_function = function_table.value()["process_turn"];
+        context.node_function = function_table.value()["process_node"];
+        context.way_function = function_table.value()["process_way"];
+        context.segment_function = function_table.value()["process_segment"];
         context.source_function = context.state["source_function"];
 
         context.has_turn_penalty_function = context.turn_function.valid();
@@ -705,17 +705,6 @@ std::vector<std::string> Sol2ScriptingEnvironment::GetRestrictions()
         return Sol2ScriptingEnvironment::GetStringListFromFunction("get_restrictions");
     default:
         return {};
-    }
-}
-
-void Sol2ScriptingEnvironment::SetupSources()
-{
-    auto &context = GetSol2Context();
-    BOOST_ASSERT(context.state.lua_state() != nullptr);
-
-    if (context.has_source_function)
-    {
-        context.source_function(context.profile_table);
     }
 }
 

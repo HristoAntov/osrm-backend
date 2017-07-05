@@ -18,36 +18,36 @@ Feature: Profile API version 2
               }
             end
 
-            function node_function (profile, node, result)
-              print ('node_function ' .. node:id())
+            function process_node(profile, node, result)
+              print ('process_node ' .. node:id())
             end
 
-            function way_function(profile, way, result)
+            function process_way(profile, way, result)
               result.name = way:get_value_by_key('name')
               result.weight = 10
               result.forward_mode = mode.driving
               result.backward_mode = mode.driving
               result.forward_speed = 36
               result.backward_speed = 36
-              print ('way_function ' .. way:id() .. ' ' .. result.name)
+              print ('process_way ' .. way:id() .. ' ' .. result.name)
             end
 
-            function turn_function (profile, turn)
-              print('turn_function', turn.angle, turn.turn_type, turn.direction_modifier, turn.has_traffic_light)
+            function process_turn (profile, turn)
+              print('process_turn', turn.angle, turn.turn_type, turn.direction_modifier, turn.has_traffic_light)
               turn.weight = turn.angle == 0 and 0 or 4.2
               turn.duration = turn.weight
             end
 
-            function segment_function (profile, segment)
-                print ('segment_function ' .. segment.source.lon .. ' ' .. segment.source.lat)
+            function process_segment (profile, segment)
+                print ('process_segment ' .. segment.source.lon .. ' ' .. segment.source.lat)
             end
 
             return {
               setup = setup,
-              node = node_function,
-              way = way_function,
-              segment = segment_function,
-              turn = turn_function
+              process_node = process_node,
+              process_way = process_way,
+              process_segment = process_segment,
+              process_turn = process_turn
             }
             """
         And the node map
@@ -66,10 +66,10 @@ Feature: Profile API version 2
 
         When I run "osrm-extract --profile {profile_file} {osm_file}"
         Then it should exit successfully
-        And stdout should contain "node_function"
-        And stdout should contain "way_function"
-        And stdout should contain "turn_function"
-        And stdout should contain "segment_function"
+        And stdout should contain "process_node"
+        And stdout should contain "process_way"
+        And stdout should contain "process_turn"
+        And stdout should contain "process_segment"
 
         When I route I should get
            | from | to | route    | time  |

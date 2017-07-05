@@ -20,7 +20,7 @@ Feature: Testbot - Check assigning nil values
           result.backward_mode = mode.driving
         end
 
-        functions.way = way_function
+        functions.process_way = way_function
         return functions
         """
         Given the node map

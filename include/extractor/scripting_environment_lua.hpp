@@ -66,7 +66,6 @@ class Sol2ScriptingEnvironment final : public ScriptingEnvironment
     std::vector<std::string> GetStringListFromFunction(const std::string &function_name);
     std::vector<std::string> GetNameSuffixList() override;
     std::vector<std::string> GetRestrictions() override;
-    void SetupSources() override;
     void ProcessTurn(ExtractionTurn &turn) override;
     void ProcessSegment(ExtractionSegment &segment) override;
 

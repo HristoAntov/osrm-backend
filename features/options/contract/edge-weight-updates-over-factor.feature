@@ -44,7 +44,7 @@ Feature: osrm-contract command line option: edge-weight-updates-over-factor
           return profile
         end
 
-        functions.way = function(profile, way, result)
+        functions.process_way = function(profile, way, result)
           result.forward_mode = mode.driving
           result.backward_mode = mode.driving
           result.weight = 1

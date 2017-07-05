@@ -73,7 +73,7 @@ Feature: Weight tests
           return profile
         end
 
-        functions.way = function(profile, way, result)
+        functions.process_way = function(profile, way, result)
           result.forward_mode = mode.driving
           result.backward_mode = mode.driving
           result.forward_speed = 42
@@ -109,7 +109,7 @@ Feature: Weight tests
           return profile
         end
 
-        functions.way = function(profile, way, result)
+        functions.process_way = function(profile, way, result)
           result.forward_mode = mode.driving
           result.backward_mode = mode.driving
           result.duration = 42
@@ -150,7 +150,7 @@ Feature: Weight tests
           return profile
         end
 
-        functions.way = function(profile, way, result)
+        functions.process_way = function(profile, way, result)
           result.forward_mode = mode.driving
           result.backward_mode = mode.driving
           result.duration = 42
@@ -195,14 +195,14 @@ Feature: Weight tests
           return profile
         end
 
-        functions.way = function(profile, way, result)
+        functions.process_way = function(profile, way, result)
           result.forward_mode = mode.driving
           result.backward_mode = mode.driving
           result.weight = 42
           result.duration = 3
         end
 
-        functions.segment = function(profile, segment)
+        functions.process_segment = function(profile, segment)
           segment.weight = 1
           segment.duration = 11
         end
@@ -246,19 +246,19 @@ Feature: Weight tests
           return profile
         end
 
-        functions.way = function(profile, way, result)
+        functions.process_way = function(profile, way, result)
           result.forward_mode = mode.driving
           result.backward_mode = mode.driving
           result.weight = 42
           result.duration = 3
         end
 
-        functions.segment = function(profile, segment)
+        functions.process_segment = function(profile, segment)
           segment.weight = 1.11
           segment.duration = 100
         end
 
-        functions.turn = function(profile, turn)
+        functions.process_turn = function(profile, turn)
           print (turn.angle)
           turn.weight = 2 + turn.angle / 100
           turn.duration = turn.angle
@@ -302,14 +302,14 @@ Feature: Weight tests
           return profile
         end
 
-        functions.way = function(profile, way, result)
+        functions.process_way = function(profile, way, result)
           result.forward_mode = mode.driving
           result.backward_mode = mode.driving
           result.weight = 42
           result.duration = 3
         end
 
-        functions. segment = function(profile, segment)
+        functions.process_segment = function(profile, segment)
           segment.weight = 10
           segment.duration = 11
         end
