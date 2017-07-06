@@ -347,7 +347,7 @@ function process_way(profile, way, result)
     WayHandlers.penalties,
 
     -- compute class labels
-    'handle_classes',
+    WayHandlers.classes,
 
     -- handle turn lanes and road classification, used for guidance
     WayHandlers.turn_lanes,

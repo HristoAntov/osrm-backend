@@ -279,7 +279,7 @@ function WayHandlers.speed(profile,way,result,data)
 end
 
 -- add class information
-function Handlers.handle_classes(way,result,data,profile)
+function WayHandlers.classes(profile,way,result,data)
     local forward_toll, backward_toll = Tags.get_forward_backward_by_key(way, data, "toll")
     local forward_route, backward_route = Tags.get_forward_backward_by_key(way, data, "route")
 
