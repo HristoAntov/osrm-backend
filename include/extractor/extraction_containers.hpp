@@ -3,7 +3,6 @@
 
 #include "extractor/external_memory_node.hpp"
 #include "extractor/first_and_last_segment_of_way.hpp"
-#include "extractor/guidance/turn_lane_types.hpp"
 #include "extractor/internal_extractor_edge.hpp"
 #include "extractor/restriction.hpp"
 #include "extractor/scripting_environment.hpp"
@@ -40,7 +39,7 @@ class ExtractionContainers
     void PrepareEdges(ScriptingEnvironment &scripting_environment);
 
     void WriteNodes(storage::io::FileWriter &file_out) const;
-    void WriteRestrictions(const std::string &restrictions_file_name);
+    void WriteConditionalRestrictions(const std::string &restrictions_file_name);
     void WriteEdges(storage::io::FileWriter &file_out) const;
     void WriteCharData(const std::string &file_name);
 
@@ -48,7 +47,6 @@ class ExtractionContainers
     using STXXLNodeIDVector = stxxl::vector<OSMNodeID>;
     using STXXLNodeVector = stxxl::vector<ExternalMemoryNode>;
     using STXXLEdgeVector = stxxl::vector<InternalExtractorEdge>;
-    using RestrictionsVector = std::vector<InputRestrictionContainer>;
     using STXXLWayIDStartEndVector = stxxl::vector<FirstAndLastSegmentOfWay>;
     using STXXLNameCharData = stxxl::vector<unsigned char>;
     using STXXLNameOffsets = stxxl::vector<unsigned>;
@@ -58,11 +56,15 @@ class ExtractionContainers
     STXXLEdgeVector all_edges_list;
     STXXLNameCharData name_char_data;
     STXXLNameOffsets name_offsets;
-    // an adjacency array containing all turn lane masks
-    RestrictionsVector restrictions_list;
     STXXLWayIDStartEndVector way_start_end_id_list;
     std::unordered_map<OSMNodeID, NodeID> external_to_internal_node_id_map;
     unsigned max_internal_node_id;
+
+    // list of restrictions before we transform them into the output types
+    std::vector<InputConditionalTurnRestriction> restrictions_list;
+
+    // turn restrictions split into conditional and unconditional turn restrictions
+    std::vector<ConditionalTurnRestriction> conditional_turn_restrictions;
     std::vector<TurnRestriction> unconditional_turn_restrictions;
 
     ExtractionContainers();
