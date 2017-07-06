@@ -465,10 +465,9 @@ void Sol2ScriptingEnvironment::InitContext(LuaScriptingContext &context)
         // clear global not used in v2
         context.state["properties"] = sol::nullopt;
 
-
         // check function table
         if (function_table == sol::nullopt)
-            throw util::exception("Profile must return a function table."); 
+            throw util::exception("Profile must return a function table.");
 
         // call initialize function
         sol::function setup_function = function_table.value()["setup"];
@@ -492,7 +491,6 @@ void Sol2ScriptingEnvironment::InitContext(LuaScriptingContext &context)
         context.has_way_function = context.way_function.valid();
         context.has_segment_function = context.segment_function.valid();
         context.has_source_function = context.source_function.valid();
-
 
         // set constants
         context.state.new_enum("constants",
@@ -545,7 +543,7 @@ void Sol2ScriptingEnvironment::InitContext(LuaScriptingContext &context)
         break;
     }
     case 1:
-         // cache references to functions for faster execution
+        // cache references to functions for faster execution
         context.turn_function = context.state["turn_function"];
         context.node_function = context.state["node_function"];
         context.way_function = context.state["way_function"];
@@ -563,7 +561,7 @@ void Sol2ScriptingEnvironment::InitContext(LuaScriptingContext &context)
         BOOST_ASSERT(context.properties.GetTrafficSignalPenalty() == 0);
         break;
     case 0:
-         // cache references to functions for faster execution
+        // cache references to functions for faster execution
         context.turn_function = context.state["turn_function"];
         context.node_function = context.state["node_function"];
         context.way_function = context.state["way_function"];
