@@ -39,7 +39,7 @@ struct LuaScriptingContext final
     sol::function source_function;
 
     int api_version;
-    sol::table  profile_table;
+    sol::table profile_table;
 };
 
 /**
