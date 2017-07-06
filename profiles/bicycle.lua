@@ -22,10 +22,6 @@ function setup()
     u_turn_penalty            = 20,
     turn_penalty              = 6,
     turn_bias                 = 1.4,
-
-    -- reduce the driving speed by 30% for unsafe roads
-    -- local safety_penalty            = 0.7,
-    safety_penalty            = 1.0,
     use_public_transport      = true,
 
     allowed_start_modes = Set {
