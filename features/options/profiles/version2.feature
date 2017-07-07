@@ -10,11 +10,13 @@ Feature: Profile API version 2
 
             function setup()
               return {
-                max_speed_for_map_matching      = 180/3.6,
-                use_turn_restrictions           = true,
-                continue_straight_at_waypoint   = true,
-                weight_name                     = 'test_version2',
-                weight_precision                = 2
+                properties = {
+                  max_speed_for_map_matching      = 180/3.6,
+                  use_turn_restrictions           = true,
+                  continue_straight_at_waypoint   = true,
+                  weight_name                     = 'test_version2',
+                  weight_precision                = 2
+                }
               }
             end
 

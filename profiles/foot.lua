@@ -5,17 +5,19 @@ require('lib/profile_v2')
 function setup()
   local walking_speed = 5
   return {
-    weight_name                   = 'duration',
-    max_speed_for_map_matching    = 40/3.6, -- kmph -> m/s
-    use_turn_restrictions         = false,
-    continue_straight_at_waypoint = false,
-    call_tagless_node_function    = false,
+    properties = {
+      weight_name                   = 'duration',
+      max_speed_for_map_matching    = 40/3.6, -- kmph -> m/s
+      call_tagless_node_function    = false,
+      traffic_light_penalty         = 2,
+      u_turn_penalty                = 2,
+      continue_straight_at_waypoint = false,
+      use_turn_restrictions         = false,
+    },
 
     default_mode            = mode.walking,
     default_speed           = walking_speed,
     oneway_handling         = 'specific',     -- respect 'oneway:foot' but not 'oneway'
-    traffic_light_penalty   = 2,
-    u_turn_penalty          = 2,
 
     barrier_whitelist = Set {
       'cycle_barrier',
@@ -238,13 +240,13 @@ function process_turn (profile, turn)
   turn.duration = 0.
 
   if turn.direction_modifier == direction_modifier.u_turn then
-     turn.duration = turn.duration + profile.u_turn_penalty
+     turn.duration = turn.duration + profile.properties.u_turn_penalty
   end
 
   if turn.has_traffic_light then
-     turn.duration = profile.traffic_light_penalty
+     turn.duration = profile.properties.traffic_light_penalty
   end
-  if profile.weight_name == 'routability' then
+  if profile.properties.weight_name == 'routability' then
       -- penalize turns from non-local access only segments onto local access only tags
       if not turn.source_restricted and turn.target_restricted then
           turn.weight = turn.weight + 3000

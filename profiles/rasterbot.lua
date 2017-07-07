@@ -6,8 +6,11 @@ function setup()
   local raster_path = os.getenv('OSRM_RASTER_SOURCE') or "rastersource.asc"
 
   return {
-    force_split_edges = true,
-    process_call_tagless_node = false,
+    properties = {
+      force_split_edges = true,
+      process_call_tagless_node = false,
+    },
+    
     raster_source = sources:load(
       raster_path,
       0,    -- lon_min

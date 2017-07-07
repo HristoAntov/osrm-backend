@@ -499,47 +499,51 @@ void Sol2ScriptingEnvironment::InitContext(LuaScriptingContext &context)
                                "max_turn_weight",
                                std::numeric_limits<TurnPenalty>::max());
 
-        // read properties from 'profile' table
-        sol::optional<std::string> weight_name = context.profile_table["weight_name"];
-        if (weight_name != sol::nullopt)
-            context.properties.SetWeightName(weight_name.value());
+        // read properties from 'profile.properties' table
 
-        sol::optional<std::int32_t> traffic_signal_penalty =
-            context.profile_table["traffic_signal_penalty"];
-        if (traffic_signal_penalty != sol::nullopt)
-            context.properties.SetTrafficSignalPenalty(traffic_signal_penalty.value());
+        sol::table properties = context.profile_table["properties"];
+        if (properties.valid())
+        {
+            sol::optional<std::string> weight_name = properties["weight_name"];
+            if (weight_name != sol::nullopt)
+                context.properties.SetWeightName(weight_name.value());
 
-        sol::optional<std::int32_t> u_turn_penalty = context.profile_table["u_turn_penalty"];
-        if (u_turn_penalty != sol::nullopt)
-            context.properties.SetUturnPenalty(u_turn_penalty.value());
+            sol::optional<std::int32_t> traffic_signal_penalty =
+                properties["traffic_signal_penalty"];
+            if (traffic_signal_penalty != sol::nullopt)
+                context.properties.SetTrafficSignalPenalty(traffic_signal_penalty.value());
 
-        sol::optional<double> max_speed_for_map_matching =
-            context.profile_table["max_speed_for_map_matching"];
-        if (max_speed_for_map_matching != sol::nullopt)
-            context.properties.SetMaxSpeedForMapMatching(max_speed_for_map_matching.value());
+            sol::optional<std::int32_t> u_turn_penalty = properties["u_turn_penalty"];
+            if (u_turn_penalty != sol::nullopt)
+                context.properties.SetUturnPenalty(u_turn_penalty.value());
 
-        sol::optional<bool> continue_straight_at_waypoint =
-            context.profile_table["continue_straight_at_waypoint"];
-        if (continue_straight_at_waypoint != sol::nullopt)
-            context.properties.continue_straight_at_waypoint =
-                continue_straight_at_waypoint.value();
+            sol::optional<double> max_speed_for_map_matching =
+                properties["max_speed_for_map_matching"];
+            if (max_speed_for_map_matching != sol::nullopt)
+                context.properties.SetMaxSpeedForMapMatching(max_speed_for_map_matching.value());
 
-        sol::optional<bool> use_turn_restrictions = context.profile_table["use_turn_restrictions"];
-        if (use_turn_restrictions != sol::nullopt)
-            context.properties.use_turn_restrictions = use_turn_restrictions.value();
+            sol::optional<bool> continue_straight_at_waypoint =
+                properties["continue_straight_at_waypoint"];
+            if (continue_straight_at_waypoint != sol::nullopt)
+                context.properties.continue_straight_at_waypoint =
+                    continue_straight_at_waypoint.value();
 
-        sol::optional<bool> left_hand_driving = context.profile_table["left_hand_driving"];
-        if (left_hand_driving != sol::nullopt)
-            context.properties.left_hand_driving = left_hand_driving.value();
+            sol::optional<bool> use_turn_restrictions = properties["use_turn_restrictions"];
+            if (use_turn_restrictions != sol::nullopt)
+                context.properties.use_turn_restrictions = use_turn_restrictions.value();
 
-        sol::optional<unsigned> weight_precision = context.profile_table["weight_precision"];
-        if (weight_precision != sol::nullopt)
-            context.properties.weight_precision = weight_precision.value();
+            sol::optional<bool> left_hand_driving = properties["left_hand_driving"];
+            if (left_hand_driving != sol::nullopt)
+                context.properties.left_hand_driving = left_hand_driving.value();
 
-        sol::optional<bool> force_split_edges = context.profile_table["force_split_edges"];
-        if (force_split_edges != sol::nullopt)
-            context.properties.force_split_edges = force_split_edges.value();
+            sol::optional<unsigned> weight_precision = properties["weight_precision"];
+            if (weight_precision != sol::nullopt)
+                context.properties.weight_precision = weight_precision.value();
 
+            sol::optional<bool> force_split_edges = properties["force_split_edges"];
+            if (force_split_edges != sol::nullopt)
+                context.properties.force_split_edges = force_split_edges.value();
+        }
         break;
     }
     case 1:

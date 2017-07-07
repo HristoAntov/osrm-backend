@@ -194,7 +194,7 @@ function WayHandlers.hov(profile,way,result,data)
   local all_hov_backward = WayHandlers.has_all_designated_hov_lanes(data.hov_lanes_backward)
 
   -- in this case we will use turn penalties instead of filtering out
-  if profile.weight_name == 'routability' then
+  if profile.properties.weight_name == 'routability' then
     if (all_hov_forward) then
       result.forward_restricted = true
     end
@@ -376,7 +376,7 @@ function WayHandlers.penalties(profile,way,result,data)
   local forward_penalty = math.min(service_penalty, width_penalty, alternating_penalty, sideroad_penalty)
   local backward_penalty = math.min(service_penalty, width_penalty, alternating_penalty, sideroad_penalty)
 
-  if profile.weight_name == 'routability' then
+  if profile.properties.weight_name == 'routability' then
     if result.forward_speed > 0 then
       result.forward_rate = (result.forward_speed * forward_penalty) / 3.6
     end
@@ -478,7 +478,7 @@ function WayHandlers.oneway(profile,way,result,data)
 end
 
 function WayHandlers.weights(profile,way,result,data)
-  if profile.weight_name == 'distance' then
+  if profile.properties.weight_name == 'distance' then
     result.weight = -1
      -- set weight rates to 1 for the distance weight, edge weights are distance / rate
     if (result.forward_mode ~= mode.inaccessible and result.forward_speed > 0) then

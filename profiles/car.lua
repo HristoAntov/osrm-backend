@@ -4,29 +4,28 @@ require('lib/profile_v2')
 function setup()
   local use_left_hand_driving = false
   return {
-    max_speed_for_map_matching      = 180/3.6, -- 180kmph -> m/s
-    use_turn_restrictions           = true,
-    continue_straight_at_waypoint   = true,
-    left_hand_driving               = use_left_hand_driving,
-
-    -- For routing based on duration, but weighted for preferring certain roads
-    weight_name                     = 'routability',
-    -- For shortest duration without penalties for accessibility
-    -- weight_name                     = 'duration',
-    -- For shortest distance without penalties for accessibility
-    -- weight_name                     = 'distance',
-
-    process_call_tagless_node      = false,
-
-    default_mode      = mode.driving,
-    default_speed     = 10,
-    oneway_handling   = true,
-
-    side_road_multiplier       = 0.8,
-    turn_penalty               = 7.5,
-    speed_reduction            = 0.8,
-    traffic_light_penalty      = 2,
-    u_turn_penalty             = 20,
+    properties = {
+      max_speed_for_map_matching      = 180/3.6, -- 180kmph -> m/s
+      left_hand_driving               = use_left_hand_driving,
+      -- For routing based on duration, but weighted for preferring certain roads
+      weight_name                     = 'routability',
+      -- For shortest duration without penalties for accessibility
+      -- weight_name                     = 'duration',
+      -- For shortest distance without penalties for accessibility
+      -- weight_name                     = 'distance',
+      process_call_tagless_node      = false,
+      u_turn_penalty                 = 20,
+      continue_straight_at_waypoint  = true,
+      use_turn_restrictions          = true,
+      traffic_light_penalty          = 2,
+    },
+    
+    default_mode              = mode.driving,
+    default_speed             = 10,
+    oneway_handling           = true,
+    side_road_multiplier      = 0.8,
+    turn_penalty              = 7.5,
+    speed_reduction           = 0.8,
 
     -- Note: this biases right-side driving.
     -- Should be inverted for left-driving countries.
@@ -375,7 +374,7 @@ function process_turn (profile, turn)
   local turn_bias = profile.turn_bias
 
   if turn.has_traffic_light then
-      turn.duration = profile.traffic_light_penalty
+      turn.duration = profile.properties.traffic_light_penalty
   end
 
   if turn.turn_type ~= turn_type.no_turn then
@@ -386,18 +385,18 @@ function process_turn (profile, turn)
     end
 
     if turn.direction_modifier == direction_modifier.u_turn then
-      turn.duration = turn.duration + profile.u_turn_penalty
+      turn.duration = turn.duration + profile.properties.u_turn_penalty
     end
   end
 
   -- for distance based routing we don't want to have penalties based on turn angle
-  if profile.weight_name == 'distance' then
+  if profile.properties.weight_name == 'distance' then
      turn.weight = 0
   else
      turn.weight = turn.duration
   end
   
-  if profile.weight_name == 'routability' then
+  if profile.properties.weight_name == 'routability' then
       -- penalize turns from non-local access only segments onto local access only tags
       if not turn.source_restricted and turn.target_restricted then
           turn.weight = constants.max_turn_weight

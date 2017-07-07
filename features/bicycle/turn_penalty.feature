@@ -9,7 +9,7 @@ Feature: Turn Penalties
     Scenario: Bicycle - Turn penalties on cyclability
         Given the profile file "bicycle" initialized with
         """
-        profile.weight_name = 'cyclability'
+        profile.properties.weight_name = 'cyclability'
         """
 
         Given the node map

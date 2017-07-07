@@ -64,7 +64,7 @@ Feature: Car - weights
     Scenario: Distance weights
         Given the profile file "car" initialized with
         """
-        profile.weight_name = 'distance'
+        profile.properties.weight_name = 'distance'
         """
 
         Given the node map

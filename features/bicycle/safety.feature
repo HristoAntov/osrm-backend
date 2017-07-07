@@ -4,7 +4,7 @@ Feature: Bicycle - Adds penalties to unsafe roads
     Background:
         Given the profile file "bicycle" initialized with
         """
-        profile.weight_name = 'cyclability'
+        profile.properties.weight_name = 'cyclability'
         """
 
     Scenario: Bike - Apply penalties to ways without cycleways

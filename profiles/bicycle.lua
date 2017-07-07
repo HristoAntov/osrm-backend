@@ -6,20 +6,22 @@ function setup()
   local default_speed = 15
   local walking_speed = 6
 
-   return {
-    max_speed_for_map_matching    = 110/3.6, -- kmph -> m/s
-    use_turn_restrictions         = false,
-    continue_straight_at_waypoint = false,
-  --weight_name                   = 'cyclability',
-    weight_name                   = 'duration',
-    process_call_tagless_node    = false,
+  return {
+    properties = {
+      u_turn_penalty                = 20,
+      traffic_light_penalty         = 2,
+      --weight_name                   = 'cyclability',
+      weight_name                   = 'duration',
+      process_call_tagless_node     = false,
+      max_speed_for_map_matching    = 110/3.6, -- kmph -> m/s
+      use_turn_restrictions         = false,
+      continue_straight_at_waypoint = false
+    },
 
     default_mode              = mode.cycling,
     default_speed             = default_speed,
     walking_speed             = walking_speed,
     oneway_handling           = true,
-    traffic_light_penalty     = 2,
-    u_turn_penalty            = 20,
     turn_penalty              = 6,
     turn_bias                 = 1.4,
     use_public_transport      = true,
@@ -452,7 +454,7 @@ function handle_bicycle_tags(profile,way,result,data)
 
 
   -- convert duration into cyclability
-  if profile.weight_name == 'cyclability' then
+  if profile.properties.weight_name == 'cyclability' then
       local safety_penalty = profile.unsafe_highway_list[data.highway] or 1.
       local is_unsafe = safety_penalty < 1
       local forward_is_unsafe = is_unsafe and not has_cycleway_right
@@ -544,13 +546,13 @@ function process_turn(profile, turn)
   end
 
   if turn.direction_modifier == direction_modifier.uturn then
-    turn.duration = turn.duration + profile.u_turn_penalty
+    turn.duration = turn.duration + profile.properties.u_turn_penalty
   end
 
   if turn.has_traffic_light then
-     turn.duration = turn.duration + profile.traffic_light_penalty
+     turn.duration = turn.duration + profile.properties.traffic_light_penalty
   end
-  if profile.weight_name == 'cyclability' then
+  if profile.properties.weight_name == 'cyclability' then
     turn.weight = turn.duration
   end
 end

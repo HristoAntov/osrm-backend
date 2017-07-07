@@ -9,15 +9,16 @@ require('lib/profile_v2')
 
 function setup()
   return {
-    continue_straight_at_waypoint = true,
-    use_turn_restrictions         = true,
-    max_speed_for_map_matching    = 30/3.6, --km -> m/s
-    weight_name                   = 'duration',
-    process_call_tagless_node     = false,
+    properties = {
+      continue_straight_at_waypoint = true,
+      max_speed_for_map_matching    = 30/3.6, --km -> m/s
+      weight_name                   = 'duration',
+      process_call_tagless_node     = false,
+      uturn_penalty                 = 20,
+      traffic_light_penalty         = 7,     -- seconds
+    },
 
-    -- used internally
-    uturn_penalty                 = 20,
-    traffic_light_penalty         = 7,     -- seconds
+    use_turn_restrictions         = true,
 
     default_speed  = 24,
     speeds = {
@@ -123,11 +124,11 @@ end
 
 function process_turn (profile, turn)
   if turn.direction_modifier == direction_modifier.uturn then
-    turn.duration = profile.uturn_penalty
-    turn.weight = profile.uturn_penalty
+    turn.duration = profile.properties.uturn_penalty
+    turn.weight = profile.properties.uturn_penalty
   end
   if turn.has_traffic_light then
-     turn.duration = turn.duration + profile.traffic_light_penalty
+     turn.duration = turn.duration + profile.properties.traffic_light_penalty
   end
 end
 

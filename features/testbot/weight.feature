@@ -67,9 +67,9 @@ Feature: Weight tests
 
         functions.setup = function()
           local profile = functions.setup_testbot()
-          profile.traffic_signal_penalty = 0
-          profile.u_turn_penalty = 0
-          profile.weight_name = 'steps'
+          profile.properties.traffic_signal_penalty = 0
+          profile.properties.u_turn_penalty = 0
+          profile.properties.weight_name = 'steps'
           return profile
         end
 
@@ -103,9 +103,9 @@ Feature: Weight tests
 
         functions.setup = function()
           local profile = functions.setup_testbot()
-          profile.traffic_signal_penalty = 0
-          profile.u_turn_penalty = 0
-          profile.weight_name = 'steps'
+          profile.properties.traffic_signal_penalty = 0
+          profile.properties.u_turn_penalty = 0
+          profile.properties.weight_name = 'steps'
           return profile
         end
 
@@ -144,9 +144,9 @@ Feature: Weight tests
 
         functions.setup = function()
           local profile = functions.setup_testbot()
-          profile.traffic_signal_penalty = 0
-          profile.u_turn_penalty = 0
-          profile.weight_name = 'steps'
+          profile.properties.traffic_signal_penalty = 0
+          profile.properties.u_turn_penalty = 0
+          profile.properties.weight_name = 'steps'
           return profile
         end
 
@@ -189,9 +189,9 @@ Feature: Weight tests
 
         functions.setup = function()
           local profile = functions.setup_testbot()
-          profile.traffic_signal_penalty = 0
-          profile.u_turn_penalty = 0
-          profile.weight_name = 'steps'
+          profile.properties.traffic_signal_penalty = 0
+          profile.properties.u_turn_penalty = 0
+          profile.properties.weight_name = 'steps'
           return profile
         end
 
@@ -239,10 +239,10 @@ Feature: Weight tests
 
         functions.setup = function()
           local profile = functions.setup_testbot()
-          profile.traffic_signal_penalty = 0
-          profile.u_turn_penalty = 0
-          profile.weight_name = 'steps'
-          profile.weight_precision = 3
+          profile.properties.traffic_signal_penalty = 0
+          profile.properties.u_turn_penalty = 0
+          profile.properties.weight_name = 'steps'
+          profile.properties.weight_precision = 3
           return profile
         end
 
@@ -296,9 +296,9 @@ Feature: Weight tests
 
         functions.setup = function()
           local profile = functions.setup_testbot()
-          profile.traffic_signal_penalty = 0
-          profile.u_turn_penalty = 0
-          profile.weight_name = 'steps'
+          profile.properties.traffic_signal_penalty = 0
+          profile.properties.u_turn_penalty = 0
+          profile.properties.weight_name = 'steps'
           return profile
         end
 
@@ -349,7 +349,7 @@ Feature: Weight tests
     Scenario: Step weights -- segment_function with speed and turn updates with fallback to durations
         Given the profile file "testbot" initialized with
         """
-        profile.weight_precision = 3
+        profile.properties.weight_precision = 3
         """
 
         And the node map

@@ -4,7 +4,7 @@ Feature: Bicycle - Route around alleys
     Background:
         Given the profile file "bicycle" initialized with
         """
-        profile.weight_name = 'cyclability'
+        profile.properties.weight_name = 'cyclability'
         """
 
     Scenario: Bicycle - Avoid taking alleys

@@ -10,9 +10,9 @@ Feature: Traffic - speeds edge cases
           | ab    | primary |
         And the profile file "testbot" initialized with
         """
-        profile.traffic_signal_penalty = 0
-        profile.u_turn_penalty = 0
-        profile.weight_precision = 2
+        profile.properties.traffic_signal_penalty = 0
+        profile.properties.u_turn_penalty = 0
+        profile.properties.weight_precision = 2
         """
         And the contract extra arguments "--segment-speed-file {speeds_file}"
         And the customize extra arguments "--segment-speed-file {speeds_file}"

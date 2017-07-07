@@ -40,7 +40,7 @@ Feature: osrm-contract command line option: edge-weight-updates-over-factor
 
         functions.setup = function()
           local profile = functions.setup_testbot()
-          profile.weight_name = 'steps'
+          profile.properties.weight_name = 'steps'
           return profile
         end
 
