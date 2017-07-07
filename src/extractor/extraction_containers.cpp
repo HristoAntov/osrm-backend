@@ -163,6 +163,7 @@ void ExtractionContainers::PrepareData(ScriptingEnvironment &scripting_environme
     PrepareNodes();
     WriteNodes(file_out);
     PrepareEdges(scripting_environment);
+    STXXLNodeVector().swap(all_nodes_list);
     WriteEdges(file_out);
 
     PrepareRestrictions();
