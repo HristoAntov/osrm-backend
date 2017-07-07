@@ -14,6 +14,9 @@
 #include <stxxl/vector>
 #include <unordered_map>
 
+// TODO: move to CMake
+//#define USE_STXXL_IN_EXTRACT 1
+
 namespace osrm
 {
 namespace extractor
@@ -27,13 +30,12 @@ namespace extractor
  */
 class ExtractionContainers
 {
-#ifndef _MSC_VER
-    constexpr static unsigned stxxl_memory =
-        ((sizeof(std::size_t) == 4) ? std::numeric_limits<int>::max()
-                                    : std::numeric_limits<unsigned>::max());
+#if USE_STXXL_IN_EXTRACT
+    template <typename T> using ExtractionVector = stxxl::vector<T>;
 #else
-    const static unsigned stxxl_memory = ((sizeof(std::size_t) == 4) ? INT_MAX : UINT_MAX);
+    template <typename T> using ExtractionVector = std::vector<T>;
 #endif
+
     void FlushVectors();
     void PrepareNodes();
     void PrepareRestrictions();
@@ -45,24 +47,24 @@ class ExtractionContainers
     void WriteCharData(const std::string &file_name);
 
   public:
-    using STXXLNodeIDVector = stxxl::vector<OSMNodeID>;
-    using STXXLNodeVector = stxxl::vector<QueryNode>;
-    using STXXLEdgeVector = stxxl::vector<InternalExtractorEdge>;
-    using RestrictionsVector = std::vector<InputRestrictionContainer>;
-    using STXXLWayIDStartEndVector = stxxl::vector<FirstAndLastSegmentOfWay>;
-    using STXXLNameCharData = stxxl::vector<unsigned char>;
-    using STXXLNameOffsets = stxxl::vector<unsigned>;
+    using NodeIDVector = ExtractionVector<OSMNodeID>;
+    using NodeVector = ExtractionVector<QueryNode>;
+    using EdgeVector = ExtractionVector<InternalExtractorEdge>;
+    using RestrictionsVector = ExtractionVector<InputRestrictionContainer>;
+    using WayIDStartEndVector = ExtractionVector<FirstAndLastSegmentOfWay>;
+    using NameCharData = ExtractionVector<unsigned char>;
+    using NameOffsets = ExtractionVector<unsigned>;
 
     std::vector<OSMNodeID> barrier_nodes;
     std::vector<OSMNodeID> traffic_lights;
-    STXXLNodeIDVector used_node_id_list;
-    STXXLNodeVector all_nodes_list;
-    STXXLEdgeVector all_edges_list;
-    STXXLNameCharData name_char_data;
-    STXXLNameOffsets name_offsets;
+    NodeIDVector used_node_id_list;
+    NodeVector all_nodes_list;
+    EdgeVector all_edges_list;
+    NameCharData name_char_data;
+    NameOffsets name_offsets;
     // an adjacency array containing all turn lane masks
     RestrictionsVector restrictions_list;
-    STXXLWayIDStartEndVector way_start_end_id_list;
+    WayIDStartEndVector way_start_end_id_list;
     std::unordered_map<OSMNodeID, NodeID> external_to_internal_node_id_map;
     unsigned max_internal_node_id;
     std::vector<TurnRestriction> unconditional_turn_restrictions;
